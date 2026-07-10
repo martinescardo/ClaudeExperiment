@@ -2,7 +2,7 @@
 
 {-# OPTIONS --safe --without-K #-}
 
-module Claude.DialogueTreeHeight.Index where
+module Claude.DialogueTreeHeight.index where
 
 import Claude.DialogueTreeHeight.Classical
 import Claude.DialogueTreeHeight.Constructive

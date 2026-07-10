@@ -77,7 +77,7 @@ matching Agda, from `source/`:
 
 ```
 agda Claude/BrouwerOrdinals/index.lagda
-agda Claude/DialogueTreeHeight/Index.lagda
+agda Claude/DialogueTreeHeight/index.lagda
 ```
 
 check the indexed developments; the standalone prototype modules (e.g.

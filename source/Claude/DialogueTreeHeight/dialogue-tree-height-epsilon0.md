@@ -3,7 +3,7 @@
 > **Working note (superseded).** This was the first sketch and it
 > over-claimed (see its own §IV onwards). For the canonical, corrected, and
 > elegant account read **`dialogue-tree-height.md`**; for the verified core,
-> the Agda module `DialogueTreeHeight.Index`. This file is kept as part of the
+> the Agda module `DialogueTreeHeight.index`. This file is kept as part of the
 > record only.
 
 *A mathematical companion to the MFPS XXIX paper

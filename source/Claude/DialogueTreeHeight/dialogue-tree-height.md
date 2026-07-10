@@ -5,7 +5,7 @@
 in this directory are the working notes that led here — kept as a record,
 but superseded by this one. The mathematics that is **proved** is
 machine-checked in the Agda modules `DialogueTreeHeight.*` (all `--safe`, no
-postulates); a guided tour is `DialogueTreeHeight.Index`.*
+postulates); a guided tour is `DialogueTreeHeight.index`.*
 
 ---
 

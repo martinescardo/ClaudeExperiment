@@ -1,7 +1,7 @@
 # Hereditary two-component majorant: a scoped build
 
 > **Working note (superseded).** Canonical account: **`dialogue-tree-height.md`**.
-> Verified core: Agda `DialogueTreeHeight.Index`. The "Howard" framing here is
+> Verified core: Agda `DialogueTreeHeight.index`. The "Howard" framing here is
 > corrected in `dialogue-tree-height-correct-framing.md`. Kept as record.
 
 *Goal: define the hereditary (height, magnitude) majorant à la Howard for

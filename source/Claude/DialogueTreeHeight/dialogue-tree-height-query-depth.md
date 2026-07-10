@@ -1,7 +1,7 @@
 # The query-nesting-depth analysis: the right invariant is an operator
 
 > **Working note (superseded).** Canonical account: **`dialogue-tree-height.md`**.
-> Verified core: Agda `DialogueTreeHeight.Index`. The operator `H` developed
+> Verified core: Agda `DialogueTreeHeight.index`. The operator `H` developed
 > here is the one machine-checked in `DialogueTreeHeight.Operator`. Kept as record.
 
 *Strategy document for the residual lemma R3, after the discovery

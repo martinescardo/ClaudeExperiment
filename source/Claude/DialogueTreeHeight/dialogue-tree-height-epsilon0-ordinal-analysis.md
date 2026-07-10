@@ -1,7 +1,7 @@
 # The ε₀ bound for dialogue-tree heights: the ordinal analysis
 
 > **Working note (superseded).** Canonical, corrected account:
-> **`dialogue-tree-height.md`**. Verified core: Agda `DialogueTreeHeight.Index`.
+> **`dialogue-tree-height.md`**. Verified core: Agda `DialogueTreeHeight.index`.
 > Kept as record; note the attribution correction below and in
 > `dialogue-tree-height-correct-framing.md`.
 

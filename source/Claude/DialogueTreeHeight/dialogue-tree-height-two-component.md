@@ -1,7 +1,7 @@
 # Two-component majorization for dialogue-tree heights
 
 > **Working note (superseded).** Canonical account: **`dialogue-tree-height.md`**.
-> Verified core: Agda `DialogueTreeHeight.Index`. Kept as record.
+> Verified core: Agda `DialogueTreeHeight.index`. Kept as record.
 
 *Fresh, properly-scoped attempt at the ε₀ bound, repairing the defect
 diagnosed in `…-ordinal-analysis.md` Part IV: the height-only majorant is

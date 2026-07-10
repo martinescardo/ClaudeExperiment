@@ -49,7 +49,7 @@ Everything is `--safe`, no postulates, with the flags in
 
 ```
 agda Claude/BrouwerOrdinals/index.lagda
-agda Claude/DialogueTreeHeight/Index.lagda
+agda Claude/DialogueTreeHeight/index.lagda
 ```
 
 The standalone prototype modules (not all are in the tours) are checked

@@ -1,13 +1,13 @@
 # The verified frontier (status after the 2026-06-29 push)
 
 > Canonical exposition: `dialogue-tree-height.md`. Verified tour:
-> Agda `DialogueTreeHeight.Index`. This note records, precisely, the
+> Agda `DialogueTreeHeight.index`. This note records, precisely, the
 > machine-checked state and the two sub-developments that remain for the
 > **first-order** theorem. Honest throughout: the conjecture is open.
 
 ## What is now machine-checked (`--safe --without-K`, no postulates)
 
-The tour `DialogueTreeHeight.Index` imports, in dependency order:
+The tour `DialogueTreeHeight.index` imports, in dependency order:
 
 1. `…Constructive` — height calculus L1–L3 on Brouwer codes.
 2. `…Count` — the `values-≤` Count Lemma (bounded count ⟹ bounded graft).

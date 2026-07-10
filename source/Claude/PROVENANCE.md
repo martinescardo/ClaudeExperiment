@@ -49,7 +49,7 @@ type-checks under Agda with the flags in `ClaudeExperiment.agda-lib`
 
 ```
 agda Claude/BrouwerOrdinals/index.lagda
-agda Claude/DialogueTreeHeight/Index.lagda
+agda Claude/DialogueTreeHeight/index.lagda
 ```
 
 check the indexed tours; the standalone prototype modules are checked
