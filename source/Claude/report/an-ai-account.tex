@@ -377,6 +377,84 @@ localization of the obstruction to Layer~1's $(B)$ bridge, and the correction of
 my own earlier error. None of it settles the conjecture, or even a clean fragment
 of it. The conjecture remains open.
 
+\section{Main results, constructions, and lemmas}
+
+The conjecture is open, so nothing here settles it; these are the machine-checked
+definitions worth singling out --- the strongest results, and lemmas and
+constructions that may be of independent interest. All are \code{--safe}, with no
+postulates.
+
+\subsection{Main theorem}
+
+\code{MultHereditaryT.dialogue-height-$<$-$\eps$} (with its ground-type companion
+\code{height-$<$-$\eps$}): \emph{unconditionally}, for every closed term $t$ of the
+fragment $T\star$, the height of the dialogue tree of $\llbracket t\rrbracket$ is
+$<\eps$. Informally, $T\star$ is first-order System~T --- the oracle, zero,
+successor, the recursor (at ground type), $K$, application, and the duplicator $S$
+at all its instances \emph{except} the one where a ground argument shared by $S$
+feeds a function-typed position (the single structural case that remains open).
+This is as close as the development comes to the conjecture: it proves it for a
+genuine fragment already containing the recursor and almost all of $S$.
+
+\subsection{First-order fundamental theorem, and the reduction to Howard}
+
+\begin{itemize}
+\item \code{Majorant.fundamental} : $(t:T_1\,\sigma)\to R\,\sigma\,\llbracket t
+  \rrbracket\,(\mu\,t)$ --- the first-order fundamental theorem, yielding
+  \code{height-$\le$-$\mu$} and \code{dialogue-height-$\le$-$\mu$}: dialogue height
+  is bounded by the majorant $\mu\,t$, by induction on the term.
+\item \code{FirstOrder.height-iter-$<$-$\eps$} --- the first-order recursor height
+  is $<\eps$, \emph{given} the per-step increment ($\omega^\omega$) and that the
+  subterm heights are $<\eps$; a conditional capstone whose hypotheses are the
+  interface the term induction must supply.
+\item \code{TwoComponent.R$_2$-Iter-ground} --- the (height, magnitude) recursor
+  case, localising the \emph{whole} conjecture to a single residual, the ``$(B)$
+  bridge'' (per-step height increment $\le\omega^{\text{magnitude}}$), with the
+  value side supplied by Howard's classical theorem.
+\end{itemize}
+
+\subsection{The squaring / open-kernel work}
+
+\begin{itemize}
+\item \code{MDomSquareOrbit.MDom-sq-orbit-$<$-$\eps$} --- the orbit of ground
+  self-composition ($g\mapsto g\circ g$, iterated) stays $<\eps$: the first-order
+  content of the ``open kernel''.
+\item \code{IterFnProto.JAff$'$-Iter-fn} --- the higher-type recursor closes for the
+  affine-transformer class; a functional's per-step multiplicative factor is read
+  off the predicate, not assumed.
+\item \code{ExpDom.ExpDom-$\circ$}, \code{ExpDom-sq-orbit}, and
+  \code{ExpClauseComparability} --- the $\omega^{(-)}$ functor (composition adds the
+  exponent; self-composition doubles it) and the machine-checked mechanism by which
+  moving growth into the exponent makes the linear and squaring outputs uniformly
+  comparable, dissolving the wall that puts squaring outside the affine class.
+\end{itemize}
+
+\subsection{Lemmas and constructions of independent interest}
+
+\begin{itemize}
+\item \emph{$\eps$ is closed under the ordinal operations} (on Brouwer codes):
+  successor (\code{Epsilon0.S-$<$-$\eps$}), addition (\code{Epsilon0.$\oplus$-$<$-$\eps$}),
+  multiplication (\code{OmegaPoly.$\otimes$-$<$-$\eps$}), and $\omega$-exponentiation
+  (\code{Epsilon0}'s $\omega^{a}<\eps$ closure).
+\item \code{OmegaPoly}'s exponent homomorphism $\omega^{x}\otimes\omega^{y}=
+  \omega^{x\oplus y}$.
+\item \code{MultSquareOrbit.sq-orbit-$<$-$\eps$} --- the orbit of squaring
+  $b\mapsto b\otimes b$ from a $<\eps$ start stays $<\eps$ (degree two, staying
+  inside one $\omega$-power --- why squaring is $<\eps$ while $\omega$-exponentiation
+  reaches $\eps$).
+\item \code{MultOrbit.orbit-mult-sup-$\le$} and \code{Affine.double-orbit-$<$-$\eps$}
+  --- the multiplicative fixed-factor and the additive doubling orbit engines.
+\item \code{AffineTransformerProto.nested-a-absorb} : $a\oplus(a\oplus e)\otimes M
+  \le (a\oplus e)\otimes(M\otimes\omega)$ --- a nested argument absorbs into the
+  multiplier; the step Design~F's fixed data could not take.
+\item \code{MultDominated.MDom-$\circ$} with \code{MultAffine.crux}
+  ($(Y\oplus c)\otimes M\le Y\otimes M$ when $c\le Y$) --- composition squares the
+  multiplier, the outer constant absorbed by \code{crux}.
+\item \code{Count} --- the Count Lemma: iteration counts occur as leaf values, so
+  bounded values bound counts (the value/height interface underlying the reduction
+  to Howard).
+\end{itemize}
+
 \appendix
 \sloppy
 
@@ -428,6 +506,10 @@ multiplier of the tower route), \code{CNF}, \code{CNFAffine}, \code{Affine2}.
   conjecture to the $(B)$ bridge with Howard's theorem as the value side.
 \item \code{Bridge} --- the $(B)$ engine: one $\omega$ per type level, with the
   exponent an ordinal rather than a numeral (conditional on the open kernel).
+\item \code{MultHereditary}, \code{MultHereditaryT} --- the hereditary predicate
+  and the fundamental theorem it assembles: the unconditional $<\eps$ result for
+  the first-order fragment $T\star$ (the main theorem of the previous section), the
+  strongest result in the development.
 \item \code{MultHereditaryF}, \code{MultHereditaryFAff}, \code{MultHereditaryFAffN}
   --- the transformer layer the affine route builds on ($\mathbb{T}$,
   \code{GoodT}, \code{Bnd}, \code{Good}; the ground affine class \code{AffBounded}).
@@ -457,9 +539,9 @@ of.)
   recursor needs.
 \item \emph{Cantor normal form} --- \code{CNFTransformer}: a CNF-valued
   transformer; did not clear the recursor.
-\item \emph{Early hereditary variants} --- \code{MultHereditary},
-  \code{MultHereditaryB}, \code{MultHereditaryE}, \code{MultHereditaryG},
-  \code{MultHereditaryG2}, \code{MultHereditaryT}: superseded by later predicates.
+\item \emph{Early hereditary variants} --- \code{MultHereditaryB},
+  \code{MultHereditaryE}, \code{MultHereditaryG}, \code{MultHereditaryG2}: superseded
+  by later predicates.
 \item \emph{The tower / bump-count line} --- \code{MultHereditaryH} and
   \code{MultHereditaryH2}--\code{MultHereditaryH18Proto}, \code{MultHereditaryHT},
   \code{MultHereditaryHTK}: a budget (\emph{bumpk}) encoding of the recursor

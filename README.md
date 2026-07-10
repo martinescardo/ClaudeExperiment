@@ -34,6 +34,12 @@ prior "affine" route. The report is explicit that this is Layer-2 work and that 
 genuine bottleneck — Layer 1's higher-order recursor bridge — remains open, as it
 has for every prior route.
 
+For the specific Agda definitions worth singling out — the strongest result
+(`MultHereditaryT`: an unconditional `height < ε₀` for a first-order System T
+fragment with the recursor and almost all of `S`), the first-order fundamental
+theorem, the squaring / open-kernel work, and lemmas of independent interest — see
+the **"Main results, constructions, and lemmas"** section of the report.
+
 ## Attribution
 
 The **conjecture** is Escardó's. The mathematical development that attacks it — the
@@ -45,6 +51,10 @@ mathematical steers included pointing the work at the stratify-by-type-level
 strategy of his CSL 2011 paper. Details, and an honest note on what can and cannot
 be reconstructed about authorship, are in
 [`source/Claude/PROVENANCE.md`](source/Claude/PROVENANCE.md).
+
+In concrete terms, **Martín Escardó did not create or edit any file in this repository
+by hand.** Every file here was written by Claude; his contribution was entirely through
+prompts to Claude and supervision.
 
 ## Dependency on TypeTopology
 
