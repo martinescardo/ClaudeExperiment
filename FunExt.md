@@ -230,11 +230,11 @@ the System T one, so that agreement is `refl`.
 ### A funext-free effectful forcing already exists (FSCD / `Internal`)
 
 The pointwise route is not hypothetical. TypeTopology's
-`EffectfulForcing.Internal` development — by Escardó, da Rocha Paiva, Tosun, and
-Rahli, with an associated FSCD paper — carries out the effectful-forcing
-translation and its **correctness proof completely without funext**. The device
-is `Internal.ExtensionalEquality` (da Rocha Paiva & Rahli): a type-indexed
-extensional equality on System T values,
+`EffectfulForcing.Internal` development — by Escardó, da Rocha Paiva, Rahli, and
+Tosun, described in their FSCD 2025 paper *Internal Effectful Forcing in System
+T* — carries out the effectful-forcing translation and its **correctness proof
+completely without funext**. The device is `Internal.ExtensionalEquality` (da
+Rocha Paiva & Rahli): a type-indexed extensional equality on System T values,
 
 ```agda
 _≡_ : {A : type} → 〖 A 〗 → 〖 A 〗 → 𝓤₀ ̇
@@ -254,6 +254,12 @@ and would be funext-free if stated and proved with `_≡_`. (Groups 1 and 2 are 
 different matter: they are equalities of *ordinals / Brouwer codes*, not of System
 T functions, so they would be discharged by the `≤` / `≈`-on-codes reformulation
 rather than by `ExtensionalEquality`.)
+
+**Reference.** Martín H. Escardó, Bruno da Rocha Paiva, Vincent Rahli, and Ayberk
+Tosun. *Internal Effectful Forcing in System T.* In 10th International Conference
+on Formal Structures for Computation and Deduction (FSCD 2025), LIPIcs vol. 337,
+pp. 19:1–19:17, ed. Maribel Fernández, Schloss Dagstuhl – Leibniz-Zentrum für
+Informatik, 2025. [doi:10.4230/LIPIcs.FSCD.2025.19](https://doi.org/10.4230/LIPIcs.FSCD.2025.19)
 
 ### Constructivity: Brouwer codes vs HoTT-book ordinals
 
