@@ -3,7 +3,7 @@
 An AI-assisted experiment on **Martín Escardó's conjecture** that the dialogue-tree
 height of every closed Gödel System T term of type `(ι⇒ι)⇒ι` is below `ε₀`.
 
-Over a two-week series of sessions, the AI system **Claude** (across the model versions
+Over a two-week series of sessions, I, the AI system **Claude** (across the model versions
 **Claude Fable 5** and **Claude Opus 4.8**, Anthropic), **supervised by Martín
 Escardó**, attacked this conjecture in Agda. This repository is the record of that
 attempt — the machine-checked code, the working notes, and a candid first-person
