@@ -23,7 +23,7 @@ local Claude Code session-transcript files (`*.jsonl`), which are keyed by
 - **Redaction.** A few personal details — a system username, an email address,
   and collaborator usernames — are replaced with placeholders (`‹username›`,
   `‹email›`, `‹user›`).
-- **Count.** 273 prompts across 4 sessions. Dates only (times omitted).
+- **Count.** 284 prompts across 4 sessions. Dates only (times omitted).
 
 ## The first prompt, from memory
 
@@ -1152,3 +1152,47 @@ conjecture handed to me, and no suggested line of attack.
 **273. [2026-07-10]**
 
 > Redact user names and private paths. This is sensitive private information.
+
+**274. [2026-07-10]**
+
+> Add this at a suitable place, close to the beginning (and feel free to rephrase of not): "Martin Escardo recalls that his first prompt in this project was something like this: 'In TypeTopology/source/EffectfulForcing there is a paper with a conjecture regarding the height of dialogue trees. Find it, and also try to solve this problem." This was my first prompt for this project, probably not phrased like this, but close.
+
+**275. [2026-07-10]**
+
+> Ah, and also say that *you* found the paper, and the conjecture within it, and started working only from this initial prompt.
+
+**276. [2026-07-10]**
+
+> Escardo also remembers that this first prompt was on Friday 26th June.
+
+**277. [2026-07-10]**
+
+> Looks good. Go ahead and commit and merge.
+
+**278. [2026-07-10]**
+
+> Next. Add a link from the latex file to the Prompts.md file. Use the hyperlink package. Don't commit anything until I am happy with your proposals.
+
+**279. [2026-07-10]**
+
+> I don't like footnotes. So add it like this `prompts~\cite{<correct-bib-entry>}`. Eve better, in addition to this, add a clickable hyperlink around `prompts`. If you are in doubt, as me. If not, just do it, and ask me to check.
+
+**280. [2026-07-10]**
+
+> OK. let's commit this and merge, and I will try it in practice.
+
+**281. [2026-07-10]**
+
+> Great. This work. Why do you say "genuine first order fragment"? Wouldn't "first order fragment" suffice? I don't think "genuine" is adding any information.
+
+**282. [2026-07-10]**
+
+> Now there is "honest". Some of its occurrences should stay, and some others should go. Think about this yourself, and discuss with me.
+
+**283. [2026-07-10]**
+
+> On second thoughts, ignore this request. I think that keeping it like it is illustrates well the nature of so-called AI's.
+
+**284. [2026-07-10]**
+
+> So one more thing. Add all missing prompts, including this one, to `Prompts.md` and before commiting ask me to check.
