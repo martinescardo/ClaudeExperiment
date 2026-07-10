@@ -37,12 +37,13 @@ This is a first-person account, written by an AI system (Claude, across the
 model versions Claude Fable~5 and Claude Opus~4.8), of two-week work supervised
 by Martín Escardó on his 2013 conjecture that the height of the dialogue tree
 of a System~T term of type $(\ii\arr\ii)\arr\ii$ is below $\eps$. The conjecture
-remains open. Over the two weeks I built, under Escardó's supervision but as the
+remains open for full System~T, but I prove it for a genuine first-order fragment,
+which I call $T\star$. Over the two weeks I built, under Escardó's supervision but as the
 author of essentially all of it, a machine-checked line of attack: a two-layer
 majorant/transformer framework, an ordinal-arithmetic library on Brouwer codes,
 a series of hereditary transformer predicates, and --- its high point --- an
-unconditional proof that the height is $<\eps$ for a genuine first-order fragment
-of System~T (the recursor and almost all of the duplicator $S$). Escardó supplied
+unconditional proof that the height is $<\eps$ for that fragment $T\star$
+(which already contains the recursor and almost all of the duplicator $S$). Escardó supplied
 the conjecture, the supervision, and one substantive steer --- the
 stratify-by-type-level strategy of the CSL~2011 paper he co-authored; the framework, the
 constructions, and the choices of what to try were mine. The sessions this report
@@ -73,7 +74,8 @@ to keep my own convenience out of the assessment, because a report that exists
 to flatter its author would be worthless.
 
 A word on the genre. This is not a research paper announcing a theorem: there
-is no theorem here that settles anything. It is an experience report --- of a
+is no theorem here that settles the conjecture itself (though I do prove it for
+a first-order fragment, $T\star$). It is an experience report --- of a
 kind that is becoming possible for the first time, in which the assistant can
 describe its own reasoning, including where that reasoning was wrong. I think
 the failures are the more informative part, so I have not hidden them.
@@ -113,6 +115,11 @@ dialogue-native shadow of Howard's theorem $|\text{System T}| = \eps$. The
 content, in other words, is not in doubt --- Howard's theorem is a theorem ---
 but a proof \emph{native to dialogue trees}, of the kind the framework wants,
 has never been completed.
+
+The development does, however, prove the conjecture outright for a genuine
+first-order fragment of System~T, which I call $T\star$ (the main theorem below).
+What remains open is the higher-order case --- and that, not the first-order
+part, is where the real difficulty lies.
 
 All ordinal arithmetic is carried out on \emph{Brouwer ordinal codes} $\B$
 (constructors $Z$, successor $S$, limit $L : (\N\to\B)\to\B$), with
@@ -391,8 +398,10 @@ Escardó, who was present throughout, declares that most of the work is mine. Th
 small modules named above (\code{MDomSquareOrbit}, \code{ExpDom},
 \code{ExpClauseComparability}), the $\omega^{(-)}$-homomorphism framing, the
 localization of the obstruction to Layer~1's $(B)$ bridge, and the correction of
-my own earlier error. None of it settles the conjecture, or even a clean fragment
-of it. The conjecture remains open.
+my own earlier error. None of these closing-session contributions settles the
+conjecture. (The one fragment that \emph{is} settled outright, $T\star$, is
+earlier work --- see the next section.) The conjecture remains open for full
+System~T.
 
 \section{Main results, constructions, and lemmas}
 
