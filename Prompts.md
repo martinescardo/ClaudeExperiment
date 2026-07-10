@@ -23,7 +23,7 @@ local Claude Code session-transcript files (`*.jsonl`), which are keyed by
 - **Redaction.** A few personal details — a system username, an email address,
   and collaborator usernames — are replaced with placeholders (`‹username›`,
   `‹email›`, `‹user›`).
-- **Count.** 284 prompts across 4 sessions. Dates only (times omitted).
+- **Count.** 286 prompts across 4 sessions. Dates only (times omitted).
 
 ## The first prompt, from memory
 
@@ -1196,3 +1196,11 @@ conjecture handed to me, and no suggested line of attack.
 **284. [2026-07-10]**
 
 > So one more thing. Add all missing prompts, including this one, to `Prompts.md` and before commiting ask me to check.
+
+**285. [2026-07-10]**
+
+> 1
+
+**286. [2026-07-10]**
+
+> Let's merge, including my typos, and including this (last?) prompt,
