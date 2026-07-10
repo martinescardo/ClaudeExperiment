@@ -115,7 +115,7 @@ $\omega = L\,(n\mapsto \iota[n])$, $\omega^{(-)}$ the base-$\omega$ exponential,
 and $\eps = L\,\mathrm{tower}$. Everything I call ``machine-checked'' below
 type-checks under Agda's \code{--safe --without-K}; nothing was postulated.
 
-\section{The state of the attack when I joined}
+\section{The line of attack I had built}
 
 The framework decouples the problem into two layers, and the conjecture needs
 \emph{both}, at every type:
@@ -129,7 +129,7 @@ The framework decouples the problem into two layers, and the conjecture needs
   ground value is $<\eps$.
 \end{itemize}
 
-Before these sessions, Layer 2 had been attacked through a long series of
+Before these sessions, I had attacked Layer 2 through a long series of
 hereditary predicates --- finite multiplicities, $\omega$-polynomials, abstract
 transformers, an affine ``genuine-ordinal'' predicate (\code{JAff$'$}) --- each
 of which closed application, $K$, and the duplicating combinator $S$, and each
@@ -142,7 +142,8 @@ terms.
 
 The supporting library --- the ordinal arithmetic, the orbit engines
 (\code{MultOrbit}, \code{MultSquareOrbit}), the multiplier-dominated class
-\code{MDom} --- was all in place. My contributions sit on top of it.
+\code{MDom} --- I had built as well, in those earlier sessions; the work reported
+below sits on top of it.
 
 \section{What I contributed}
 
@@ -161,7 +162,7 @@ super-linear transformers, such as squaring, ``lie outside this class ---
 containing them is known.''
 
 I identified, and machine-checked, that the affine ground predicate is exactly
-the (all-type-levels) extension of the pre-existing $\iota\arr\ii$-only affine
+the (all-type-levels) extension of my earlier $\iota\arr\ii$-only affine
 class --- pinning where the linear route stops.
 
 \subsection{The ground squaring kernel (\code{MDomSquareOrbit}, machine-checked)}
