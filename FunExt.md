@@ -1,13 +1,11 @@
 # Function extensionality in this repository
 
-This note audits **why function extensionality (funext) is used** in the
-`BrouwerOrdinals/` folder, whether it can be avoided, and exactly where it is
-crucial. It records a finding, not a change: nothing in the code was modified.
+This note audits **why function extensionality (funext) is used** in this
+repository's Agda code — where it is crucial, and whether it can be avoided. It
+covers both `BrouwerOrdinals/` and `DialogueTreeHeight/`. It records a finding,
+not a change: nothing in the code was modified.
 
-The audit of `DialogueTreeHeight/` (where the dependence is expected to be more
-essential) is still to be done.
-
-## Where funext is actually used
+## `BrouwerOrdinals/`: where funext is used
 
 Every module in `source/Claude/BrouwerOrdinals/` is parameterized by
 `fe : Fun-Ext`, but almost all of that is *threading* — passing `fe` on to
@@ -94,11 +92,86 @@ seven laws as propositional equalities on codes containing `L`.** Two ways out:
    MLTT — so if these are wanted as honest equalities at `L`, funext is
    unavoidable.
 
+## `DialogueTreeHeight/`
+
+Of the 69 modules, **67 take `fe : Fun-Ext`**, but again almost all of that is
+threading — either onto imported submodules, or to satisfy TypeTopology's
+effectful-forcing lemmas (which themselves assume `Fun-Ext`). Genuine `dfunext`
+applications are **10 sites in 6 files**, in three groups.
+
+### Group 1 — dialogue-tree height (the same limit-case idiom)
+
+The exact `BrouwerOrdinals` phenomenon, now at the dialogue node constructor
+`β : (ℕ → B ℕ) → ℕ → B ℕ` and the ordinal limit `L`: the height / operator `H`
+of a `β`-node is `L (λ j → S (…))`, so an equality of heights at a node closes
+by `ap L (dfunext fe (λ j → …))`.
+
+| Site | Lemma | Statement |
+|------|-------|-----------|
+| `Constructive.lagda:67` | `height-relabel` | relabelling leaves preserves height: `height (B-functor f d) ＝ height d` |
+| `Operator.lagda:62` | `height-is-H` | `height x ＝ H (λ _ → Z) x` |
+| `Operator.lagda:76` | `H-kleisli-extension` | `H v (kleisli-extension g d) ＝ H (λ k → H v (g k)) d` |
+| `Operator.lagda:94` | `height-iter'` | rewrites the valuation function under `H` |
+| `Classical.lagda:87` | `height-relabel` | the same, over **HoTT-book ordinals** (`ap sup`, `_+ₒ 𝟙ₒ`) |
+
+`Classical.lagda` is a deliberately-classical sidecar: it interprets heights
+into `Ordinal 𝓤₀`, derives funext from **univalence**
+(`Univalence-gives-FunExt`) rather than assuming it, and additionally uses
+**excluded middle** (`EM 𝓤₁`, since ordinal successor is not monotone without
+it). The constructive main line uses Brouwer codes precisely to avoid this, so
+this module does not bear on the main development.
+
+### Group 2 — Brouwer-code arithmetic, re-proved locally
+
+Identical to the `BrouwerOrdinals` idiom (a local copy of the `⊕` unit law):
+
+| Site | Lemma | Statement |
+|------|-------|-----------|
+| `MultHereditaryH4.lagda:162` | `⊕-Z-left` | `Z ⊕ x ＝ x` |
+| `MultHereditaryHM4.lagda:151` | `⊕-Z-left` | `Z ⊕ x ＝ x` (duplicate, in the "HM" fork) |
+
+### Group 3 — System T interpretation agreement (funext on function *values*)
+
+Genuinely different from the limit-case idiom. `MultApplicativeT.agreeF`
+certifies that the bespoke fragment's translation into real System T terms
+denotes the same thing: `⟦ ⌜ f ⌝F ⟧₁ ＝ ⟦ f ⟧F`. Here the two objects equated
+**are functions** (System T functionals), so where the translation is a genuine
+`λ` they agree only pointwise — shown by `happly`/`ap` through the applications —
+and `dfunext` reassembles the function equality.
+
+| Site | Case | Translation |
+|------|------|-------------|
+| `MultApplicativeT.lagda:93` | `agreeF (compF f g)` | composition `f ∘ g` |
+| `MultApplicativeT.lagda:95` | `agreeF (constF x)` | constant function |
+| `MultApplicativeT.lagda:97` | `agreeF (iterDiagF φ G)` | the `S`-diagonal |
+
+The other `agreeF`/`agreeG` cases are `refl` or `ap₂`; funext enters only at
+these three genuinely-`λ` translations.
+
+### Can these be avoided?
+
+Groups 1 and 2 have the **same escape route** as `BrouwerOrdinals` — the `≤`
+order carries pointwise limit rules, so stating height-invariance and the
+arithmetic law as two-sided `≤` (or an inductive `≈`) removes funext; the cost is
+that these are naturally *equalities* consumed by `transport` in the majorant
+construction, so the change threads downstream. Group 3 needs its own move:
+replace the interpretation *equality* `⟦⌜f⌝⟧ ＝ ⟦f⟧` by a pointwise-carried
+agreement, or arrange the fragment's interpretation to be *definitionally* the
+System T one. Either removes funext there; both are restructurings.
+
+As before, none of the `B`, `kleisli-extension`, `B-functor`, `height`, or `⟦_⟧`
+**definitions** need funext (they are plain recursion), and no use is for
+propositionality or h-level — every genuine use is congruence/extensionality of
+`＝`.
+
 ## Caveat about "avoiding it in the repository"
 
-Making `BrouwerOrdinals/` funext-free would **not** make the repository
-funext-free: the TypeTopology effectful-forcing / dialogue machinery it depends
-on, and the `DialogueTreeHeight/` layer on top, also assume `Fun-Ext`. Within
-this folder, though, the picture is clean — funext is used in exactly the seven
-limit-case equalities above, and is avoidable only by not using `＝` at the `L`
-constructor.
+Even with both `Claude.*` folders made funext-free, the built artifact would
+**not** be funext-free: the imported TypeTopology effectful-forcing / dialogue
+machinery (`EffectfulForcing.MFPSAndVariations.*`, `Ordinals.*`, `UF.*`) assumes
+`Fun-Ext` in its own lemmas, and that is the irreducible remainder. Within the
+`Claude.*` code, though, the picture is clean: every genuine use is a
+congruence/extensionality of `＝` — the seven limit-case ordinal equalities in
+`BrouwerOrdinals/`, and the ten sites above in `DialogueTreeHeight/` — and each
+is avoidable only by not using `＝` at a function-typed position (the `L`/`β`
+limit constructors, or the System T functionals themselves).
