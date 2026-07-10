@@ -48,7 +48,7 @@ transformer predicates, and the constructions and proofs — together with its A
 formalization and this report, was to a large extent carried out by **Claude**
 (across Claude Fable 5 and Claude Opus 4.8), under Escardó's **supervision**, whose
 mathematical steers included pointing the work at the stratify-by-type-level
-strategy of his CSL 2011 paper. Details, and an honest note on what can and cannot
+strategy of the CSL 2011 paper he co-authored. Details, and an honest note on what can and cannot
 be reconstructed about authorship, are in
 [`source/Claude/PROVENANCE.md`](source/Claude/PROVENANCE.md).
 

@@ -6,8 +6,8 @@ abstract: >-
   (Claude, across Claude Fable 5 and Claude Opus 4.8) working on Martín Escardó's
   conjecture that the dialogue-tree height of a System T term of type
   (iota => iota) => iota is below epsilon_0. The Agda code was authored by Claude
-  and supervised by Martín Escardó, as a subtree of a fork of the TypeTopology
-  library. The conjecture remains open; the work includes the ground squaring
+  and supervised by Martín Escardó; it is a standalone Agda library depending on
+  TypeTopology (checked against commit bae60c78). The conjecture remains open; the work includes the ground squaring
   recursor kernel, the omega^(-) functor construction, and a candid account of
   both progress and failure. Nothing here is committed to TypeTopology itself.
 type: software

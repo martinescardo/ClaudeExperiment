@@ -1,7 +1,7 @@
 # `source/Claude/` — the ClaudeExperiment code
 
 This is the code of **ClaudeExperiment**, an AI-assisted experiment that **depends
-on** Martín Escardó's [TypeTopology](https://www.cs.bham.ac.uk/~mhe/TypeTopology/) (but
+on** the [TypeTopology](https://www.cs.bham.ac.uk/~mhe/TypeTopology/) library (but
 contains none of it). It collects work done
 by **Claude** (across **Claude Fable 5** and **Claude Opus 4.8**, Anthropic),
 **supervised by Martín Escardó**, on his conjecture:

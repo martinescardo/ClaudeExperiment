@@ -1,7 +1,7 @@
 # Provenance and attribution
 
 This directory, `source/Claude/`, is the AI-authored code of **ClaudeExperiment**, an
-experiment that **depends on** Martín Escardó's
+experiment that **depends on** the
 [TypeTopology](https://www.cs.bham.ac.uk/~mhe/TypeTopology/) Agda library but contains
 none of it: the modules here import TypeTopology (`MLTT`, `UF`, `Ordinals`,
 `EffectfulForcing.MFPSAndVariations`, …) via `depend: TypeTopology`, checked against
@@ -22,7 +22,7 @@ TypeTopology itself.**
   constructions and proofs. Escardó contributed the **conjecture** (that the
   dialogue-tree height of a System T term of type `(ι⇒ι)⇒ι` is `< ε₀`), the
   **supervision** throughout, and specific mathematical steers — notably pointing
-  the work at the stratify-by-type-level strategy of his CSL 2011 paper, an
+  the work at the stratify-by-type-level strategy of the CSL 2011 paper he co-authored, an
   alternative Claude judged the more promising route, though it too ultimately
   failed.
 
