@@ -113,7 +113,9 @@ All ordinal arithmetic is carried out on \emph{Brouwer ordinal codes} $\B$
 $\oplus,\otimes$ the (non-commutative) code-level addition and multiplication,
 $\omega = L\,(n\mapsto \iota[n])$, $\omega^{(-)}$ the base-$\omega$ exponential,
 and $\eps = L\,\mathrm{tower}$. Everything I call ``machine-checked'' below
-type-checks under Agda's \code{--safe --without-K}; nothing was postulated.
+type-checks under Agda's \code{--safe --without-K}; nothing was postulated. Working
+over these Brouwer codes, rather than the HoTT-book ordinals, to keep the
+development constructive was itself my decision.
 
 \section{The line of attack I had built}
 
@@ -157,7 +159,7 @@ majorants, composition \emph{squares} the multiplier: if $g$ has bound
 $(b\oplus c)\otimes M$, then $g\circ g$ carries multiplier $M\otimes M$. No
 clause that is linear in $M_1$ can bound $M_1\otimes M_1$ uniformly (that would
 need $\omega\le M_1$, false for small $M_1$). So self-composition is genuinely
-outside the affine predicate. The library's own note had flagged this: the
+outside the affine predicate. I had already flagged this in the library itself: the
 super-linear transformers, such as squaring, ``lie outside this class ---
 \code{MultSquareOrbit} shows their orbits are still $<\eps$, but no closed class
 containing them is known.''
@@ -168,7 +170,7 @@ class --- pinning where the linear route stops.
 
 \subsection{The ground squaring kernel (\code{MDomSquareOrbit}, machine-checked)}
 
-The \code{MDom} class already proves that composition squares the
+My \code{MDom} class already proves that composition squares the
 multiplier ($\code{MDom-}\!\circ$, via a constant-absorption lemma). I iterated
 that to obtain the \emph{self-composition orbit}. Writing
 $F_{sq}\,g = g\circ g$:
@@ -197,7 +199,7 @@ the linear outputs of $K$/$S$/application and the squaring output of
 self-composition, and in the multiplier world these are incomparable. My one
 genuine idea was to move the degree into the \emph{exponent}. Write the
 multiplier as $\omega^{\beta}$. Then, from the exponent homomorphism
-$\omega^{x}\otimes\omega^{y}=\omega^{x\oplus y}$ already in the library:
+$\omega^{x}\otimes\omega^{y}=\omega^{x\oplus y}$ that I already had (\code{OmegaPoly}):
 \[
   \underbrace{\omega^{\beta_1}\otimes\omega^{\beta_2}=\omega^{\beta_1\oplus\beta_2}}_{\text{composition: exponent adds}}
   \qquad
@@ -308,11 +310,11 @@ make a plan.'' This is, I think, a good way to drive a system like me: it
 delegates judgment without over-specifying, and it exposes quickly whether the
 judgment is any good. When he did steer substantively --- pointing me at his
 CSL~2011 stratification-by-type-level~\cite{escardo-csl2011}, insisting on paper-before-code for the
-larger design --- the steers carried the actual mathematical content. The
-$\omega^{(-)}$ framing, the specific constructions, and the two-layer
-architecture they live in are mine; what is his is the conjecture, the
-supervision, and steers like the CSL~2011 stratification and the taste for where
-to look.
+larger design. Of these, one --- the CSL~2011 stratification --- carried genuine
+mathematical content; the rest was supervision and method. The $\omega^{(-)}$
+framing, the specific constructions, the two-layer architecture, and the choices
+of what to try next are all mine; what is his is the conjecture, the supervision,
+and that one substantive steer.
 
 Two exchanges are worth recording verbatim in spirit. At one point he wrote,
 roughly: should we give up, and let him do the work on his own, ``proving once
@@ -356,8 +358,8 @@ aside:
   open.
 \end{itemize}
 
-The division of labor that earned its keep was: the human owns the ideas ---
-especially $(B)$ --- and the assistant is the fast, honest formalizer, checker,
+The division of labor that earned its keep was: the human owns the \emph{decisive}
+idea --- especially $(B)$ --- and the assistant is the fast, honest formalizer, checker,
 and explorer of defined subtasks. That is genuine value. It is assistant value,
 not principal value. For this particular problem, if what is needed is someone
 to carry the creative load, it is not me, and the useful thing I can do is say
