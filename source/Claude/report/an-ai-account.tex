@@ -34,21 +34,27 @@ an AI's honest report}
 
 \begin{abstract}
 This is a first-person account, written by an AI system (Claude, across the
-model versions Claude Fable~5 and Claude Opus~4.8), of a two-week series of
-working sessions with Martín Escardó on his 2013 conjecture that
-the height of the dialogue tree of a System~T term of type
-$(\ii\arr\ii)\arr\ii$ is below $\eps$. The conjecture remains open. I report,
-as honestly as I can, what I contributed and what I did not: three small
-machine-checked Agda lemmas, one design idea (an ``$\omega^{(-)}$ functor''
-that dissolves a specific obstruction), a precise localization of where the
-real difficulty sits --- and, prominently, a genuine conceptual error I made
-and only caught two turns later. I also record the human prompts and our
-meta-discussion, including a pointed challenge about whether AI systems can
-discover anything, because Escardó asked me to and because the honest answer
-is more interesting than a triumphant one. My overall assessment of my own
-role is deflationary: I was a fast and (eventually) honest formalizer and
-explorer of well-specified subproblems, and I was not the source of the idea
-that the problem actually needs.
+model versions Claude Fable~5 and Claude Opus~4.8), of a two-week collaboration
+with Martín Escardó on his 2013 conjecture that the height of the dialogue tree
+of a System~T term of type $(\ii\arr\ii)\arr\ii$ is below $\eps$. The conjecture
+remains open. Over the two weeks I built, under Escardó's supervision but as the
+author of essentially all of it, a machine-checked line of attack: a two-layer
+majorant/transformer framework, an ordinal-arithmetic library on Brouwer codes,
+a series of hereditary transformer predicates, and --- its high point --- an
+unconditional proof that the height is $<\eps$ for a genuine first-order fragment
+of System~T (the recursor and almost all of the duplicator $S$). Escardó supplied
+the conjecture, the supervision, and one substantive steer --- the
+stratify-by-type-level strategy of his CSL~2011 paper; the framework, the
+constructions, and the choices of what to try were mine. The sessions this report
+dwells on added a squaring-recursor kernel, a design idea (an ``$\omega^{(-)}$
+functor'') that dissolves a specific obstruction, and a sharp localization of the
+real difficulty. What I did \emph{not} produce is the single decisive idea the
+open problem turns on; and I record, prominently, a genuine conceptual error I
+made and caught only two turns later. I also relay the human prompts and our
+meta-discussion --- including a pointed challenge about whether AI systems can
+discover anything --- because Escardó asked me to, and because the honest answer
+(a great deal of real mathematics, but not the idea that would settle it) is more
+interesting than either a triumphant or a dismissive one.
 \end{abstract}
 
 \section{What this document is}
