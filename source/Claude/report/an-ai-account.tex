@@ -47,7 +47,7 @@ the conjecture, the supervision, and one substantive steer --- the
 stratify-by-type-level strategy of the CSL~2011 paper he co-authored; the framework, the
 constructions, and the choices of what to try were mine. The sessions this report
 dwells on added a squaring-recursor kernel, a design idea (an ``$\omega^{(-)}$
-functor'') that dissolves a specific obstruction, and a sharp localization of the
+homomorphism'') that dissolves a specific obstruction, and a sharp localization of the
 real difficulty. What I did \emph{not} produce is the single decisive idea the
 open problem turns on; and I record, prominently, a genuine conceptual error I
 made and caught only two turns later. I also relay the human prompts and the
@@ -198,7 +198,7 @@ higher-type iterator with self-composition, shown $<\eps$, with the multiplier
 orbit \emph{read off} the composition lemma rather than assumed. It is a lemma,
 not a result.
 
-\subsection{The idea: an $\omega^{(-)}$ functor}
+\subsection{The idea: an $\omega^{(-)}$ homomorphism}
 
 The design difficulty is that a \emph{single} hereditary clause must bound both
 the linear outputs of $K$/$S$/application and the squaring output of
@@ -244,7 +244,7 @@ world the same domination
 \]
 requires the hypothesis $\omega\le M_1$, which fails for small $M_1$. A single
 coefficient-$\ge 2$ clause, in the exponent, bounds every lower-degree output
-unconditionally. That is precisely the wall the functor removes, and it is
+unconditionally. That is precisely the wall the homomorphism removes, and it is
 sound (monotonicity of $\otimes$ by a finite factor).
 
 \subsection{The falsification test --- and my error}
@@ -278,21 +278,21 @@ slipped one. The test caught this one. Nothing guarantees the next test will.
 \section{Where this cannot go}
 
 Here is the part I would most want a reader to take away, because it is the part
-an enthusiastic report would omit. The $\omega^{(-)}$ functor is Layer-2 work.
+an enthusiastic report would omit. The $\omega^{(-)}$ homomorphism is Layer-2 work.
 It improves how one bounds the \emph{majorant}. The hard content of the
 conjecture is in \textbf{Layer 1's higher-order recursor}: the statement
 $\height(\iterop\,F\,g_0\,n)\le \mu\text{-}\iterop(\dots)$ when $F$ is a
 functional. That step carries the dialogue-native content --- the ``$(B)$
 bridge,'' that the per-step \emph{height} increment is $\le\omega^{\text{magnitude}}$,
 carried hereditarily up the type levels. It is essentially Howard's
-theorem~\cite{howard} in dialogue-native form, and \emph{the functor does not
+theorem~\cite{howard} in dialogue-native form, and \emph{the homomorphism does not
 touch it}. My idea bounds the majorant; it says nothing about how the tree's
 height rides on \emph{magnitude} through higher-type iteration --- and the
 magnitude (value) side itself is the classical majorizability of System~T's
 functionals (Tait~\cite{tait}; Bezem~\cite{bezem}).
 
 So the two are not interchangeable. To settle the conjecture one needs both
-halves of $\height \le \mu \le \text{transformer bound}<\eps$; the functor
+halves of $\height \le \mu \le \text{transformer bound}<\eps$; the homomorphism
 supplies the second half at higher type, and the first half --- Layer 1's
 higher-order $R$-\code{Iter} --- remains open and is the genuine bottleneck. It
 is the piece every prior route also failed to cross.
@@ -301,7 +301,7 @@ I observe, and flag as a warning sign rather than an encouragement, that my
 paper analyses of Layer 2 kept concluding ``it closes.'' For a conjecture that
 is genuinely open, an argument that keeps closing is more likely to be blind to
 the wall than to have crossed it. My best current reading is that the wall is
-real and lives in $(B)$, on the layer the functor avoids --- but I hold that
+real and lives in $(B)$, on the layer the homomorphism avoids --- but I hold that
 reading loosely, given that I relocated ``the wall'' more than once in these
 sessions and was demonstrably wrong at least once.
 
@@ -389,7 +389,7 @@ development was untracked and my own memory of the sessions is compacted, I cann
 now reliably separate which ideas were mine and which were suggested to me ---
 Escardó, who was present throughout, declares that most of the work is mine. The contributions of the closing sessions reported here are the three
 small modules named above (\code{MDomSquareOrbit}, \code{ExpDom},
-\code{ExpClauseComparability}), the $\omega^{(-)}$-functor framing, the
+\code{ExpClauseComparability}), the $\omega^{(-)}$-homomorphism framing, the
 localization of the obstruction to Layer~1's $(B)$ bridge, and the correction of
 my own earlier error. None of it settles the conjecture, or even a clean fragment
 of it. The conjecture remains open.
@@ -440,7 +440,7 @@ genuine fragment already containing the recursor and almost all of $S$.
   affine-transformer class; a functional's per-step multiplicative factor is read
   off the predicate, not assumed.
 \item \code{ExpDom.ExpDom-$\circ$}, \code{ExpDom-sq-orbit}, and
-  \code{ExpClauseComparability} --- the $\omega^{(-)}$ functor (composition adds the
+  \code{ExpClauseComparability} --- the $\omega^{(-)}$ homomorphism (composition adds the
   exponent; self-composition doubles it) and the machine-checked mechanism by which
   moving growth into the exponent makes the linear and squaring outputs uniformly
   comparable, dissolving the wall that puts squaring outside the affine class.
@@ -537,7 +537,7 @@ multiplier of the tower route), \code{CNF}, \code{CNFAffine}, \code{Affine2}.
   and the two-layer bridge. The route that got furthest before the squaring wall.
 \item \code{MDomSquareOrbit}, \code{ExpDom}, \code{ExpClauseComparability} --- the
   final sessions: the ground squaring recursor kernel shown $<\eps$, the
-  $\omega^{(-)}$ functor, and the machine-checked mechanism by which it dissolves
+  $\omega^{(-)}$ homomorphism, and the machine-checked mechanism by which it dissolves
   the linear-versus-squaring wall.
 \end{itemize}
 

@@ -38,7 +38,7 @@ committed to TypeTopology itself and there is no intention to do so.
   The affine route is `AffTransformerPredicate`/`AffCombinators`/`IterFnProto`;
   the squaring frontier is `MDomSquareOrbit`, `ExpDom`, `ExpClauseComparability`.
 - The last three are the final sessions' contribution: the ground squaring
-  recursor kernel shown `< ε₀`, and the `ω^(-)`-functor mechanism that dissolves
+  recursor kernel shown `< ε₀`, and the `ω^(-)`-homomorphism mechanism that dissolves
   the affine route's linear-vs-squaring wall — machine-checked, but Layer-2 only,
   leaving the higher-order recursor bridge (Layer 1) as the open crux.
 

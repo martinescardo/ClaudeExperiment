@@ -8,7 +8,7 @@ abstract: >-
   (iota => iota) => iota is below epsilon_0. The Agda code was authored by Claude
   and supervised by Martín Escardó; it is a standalone Agda library depending on
   TypeTopology (checked against commit bae60c78). The conjecture remains open; the work includes the ground squaring
-  recursor kernel, the omega^(-) functor construction, and a candid account of
+  recursor kernel, the omega^(-) homomorphism construction, and a candid account of
   both progress and failure. Nothing here is committed to TypeTopology itself,
   and there is no intention to do so.
 type: software

@@ -6,7 +6,7 @@ matter become *affine on `β`*.
 Design note: `dialogue-tree-height-decoupling.md`. `MDomSquareOrbit` closed the
 ground self-composition orbit with an opaque `ValidMult` multiplier. The
 hereditary lift (obligation 3) needs the multiplier's transformation under
-composition and self-composition to be TRACKABLE affinely; the `ω^(–)` functor
+composition and self-composition to be TRACKABLE affinely; the `ω^(–)` homomorphism
 supplies exactly that. Writing the multiplier as `ω^ β`:
 
 * **composition** `ω^ βψ ⊗ ω^ βφ = ω^ (βψ ⊕ βφ)` (`OmegaPoly.ω^⊗`) — the exponent

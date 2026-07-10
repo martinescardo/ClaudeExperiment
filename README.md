@@ -28,7 +28,7 @@ unusually complete and honest trace of AI-assisted research, dead-ends included.
 The proof is organised in two layers: `height ⟦t⟧ ≤ μ t` (Layer 1) and a bound on
 the majorant `μ t < ε₀` by ordinal transformers (Layer 2). The experiment's
 machine-checked contributions are on Layer 2: the **ground squaring recursor
-kernel** (`MDomSquareOrbit`) shown `< ε₀`, and an **`ω^(-)` functor**
+kernel** (`MDomSquareOrbit`) shown `< ε₀`, and an **`ω^(-)` homomorphism**
 (`ExpDom`, `ExpClauseComparability`) that dissolves the specific wall stopping the
 prior "affine" route. The report is explicit that this is Layer-2 work and that the
 genuine bottleneck — Layer 1's higher-order recursor bridge — remains open, as it

@@ -1,5 +1,5 @@
 PROTOTYPE (not in the tour, not depended on): the arithmetic mechanism by which
-the `ω^(–)` functor dissolves the "single clause cannot bound both linear and
+the `ω^(–)` homomorphism dissolves the "single clause cannot bound both linear and
 squaring" wall.
 
 Design note: `dialogue-tree-height-decoupling.md`. A single hereditary transformer
@@ -15,7 +15,7 @@ higher coefficient dominates a lower one UNCONDITIONALLY: `β ≤ β ⊗ ι[2]` 
 every `β` (`x-≤-x⊗`, no hypothesis), so a coefficient-`2` exponent clause bounds
 the coefficient-`1` (linear/base) output uniformly (below, `exp-coeff-dominates`).
 The contrast between the two lemmas — one needs a hypothesis, the other does not —
-is the whole content of why the functor helps.
+is the whole content of why the homomorphism helps.
 
 This is a fragment of the mechanism, not a closure proof. The hereditary predicate
 and its fundamental theorem (in particular the higher-order recursor majorant,
@@ -58,7 +58,7 @@ exp-coeff-dominates β₁ e =
 In the MULTIPLIER world: the same domination — linear `M₁ ⊗ ω` below squaring
 `M₁ ⊗ M₁` — is available ONLY under the hypothesis `ω ≤ M₁`. Without it there is
 no uniform bound (take `M₁` finite: `M₁ ⊗ ω = ω` but `M₁ ⊗ M₁` is finite). This is
-the wall the functor removes.
+the wall the homomorphism removes.
 
 \begin{code}
 
