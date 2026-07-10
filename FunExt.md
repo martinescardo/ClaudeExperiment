@@ -95,9 +95,11 @@ seven laws as propositional equalities on codes containing `L`.** Two ways out:
 ## `DialogueTreeHeight/`
 
 Of the 69 modules, **67 take `fe : Fun-Ext`**, but again almost all of that is
-threading — either onto imported submodules, or to satisfy TypeTopology's
-effectful-forcing lemmas (which themselves assume `Fun-Ext`). Genuine `dfunext`
-applications are **10 sites in 6 files**, in three groups.
+threading — onto imported `Claude.*` submodules that carry the local lemmas
+below. The upstream effectful-forcing modules the main line actually uses
+(`MFPSAndVariations.CombinatoryT`, `.Combinators`, `.Dialogue`, `.MFPS-XXIX`,
+`.Continuity`) are themselves **funext-free**; see the Discussion. Genuine
+`dfunext` applications are **10 sites in 6 files**, in three groups.
 
 ### Group 1 — dialogue-tree height (the same limit-case idiom)
 
@@ -188,16 +190,29 @@ universe-monomorphic, entirely standard assumption, and removing it is a sizeabl
 mechanical refactor — re-plumbing every `transport` along these equalities — that
 buys little foundational ground. That is why the development simply assumes it.
 
-### The irreducible remainder: TypeTopology's funext
+### How much of this comes from upstream? Almost none
 
-Even a fully funext-free `Claude.*` would not yield a funext-free artifact. The
-imported machinery assumes `Fun-Ext` in its own lemmas: the effectful-forcing /
-dialogue layer (`EffectfulForcing.MFPSAndVariations.*`), the ordinal library
-(`Ordinals.*`), and `UF.*`. The *definitions* we consume — `B`,
-`kleisli-extension`, `B-functor`, `height`, `⟦_⟧` — are plain recursion and need
-nothing; it is the *reasoning* about them upstream that assumes funext. A
-genuinely funext-free build would therefore be an upstream project in
-TypeTopology, not something this repository can achieve on its own.
+An earlier version of this note claimed the imported TypeTopology machinery was
+an irreducible source of funext. That was wrong, and worth correcting. Every
+upstream module the **main line** builds on is funext-free: the System T syntax
+and combinator interpretation (`MFPSAndVariations.CombinatoryT`, `.Combinators`),
+the dialogue datatype with its `B-functor` / `kleisli-extension` (`.Dialogue`),
+the MFPS 2013 interpretation (`.MFPS-XXIX`), the continuity definitions
+(`.Continuity`), the Brouwer codes (`Ordinals.BrouwerCodes`), and `MLTT.Spartan`.
+The 83 `open import UF.FunExt` lines import only the *interface* — the `Fun-Ext`
+type — not a use of it.
+
+So the repository's genuine funext usage is essentially **all its own**: the
+seven `BrouwerOrdinals/` sites and the ten `DialogueTreeHeight/` sites, each a
+local choice to state something as `＝` at a function-typed position. The one
+exception is the `Classical.lagda` sidecar, whose HoTT-book-ordinal imports
+(`Ordinals.OrdinalOfOrdinals`, `Ordinals.Arithmetic`, `UF.Univalence`, …) pull in
+funext (there derived from univalence) together with excluded middle — and that
+module is deliberately off the constructive main line (see below).
+
+The consequence is the opposite of what the earlier version said: a funext-free
+height development is **within this repository's reach** — reformulate those
+local sites — not an upstream project one is blocked on.
 
 ### Funext on function values (the `agreeF` phenomenon)
 
@@ -206,12 +221,39 @@ because it is *not* the limit-case idiom. There the function-typed thing is a
 *constructor* (`L`, `β`) and funext closes a congruence. In `agreeF` the objects
 being equated **are** the functions — two interpretations of the same fragment,
 `⟦ ⌜f⌝ ⟧ ＝ ⟦ f ⟧` — and funext does its primitive job: turning extensional
-(pointwise) agreement into an identity. This is the version that no
-reformulation of *our* datatypes removes; it can be sidestepped only by carrying
-the agreement pointwise (a setoid of interpretations) or by making the
-fragment's interpretation *definitionally* the System T one, so that agreement is
-`refl`. It is the cleanest illustration that the funext here is about *equality
-of functions*, full stop.
+(pointwise) agreement into an identity. This is the version that no reformulation
+of *our* datatypes removes; it can be sidestepped only by carrying the agreement
+pointwise rather than as `＝` — exactly the route the FSCD / `Internal` work takes
+(next subsection) — or by making the fragment's interpretation *definitionally*
+the System T one, so that agreement is `refl`.
+
+### A funext-free effectful forcing already exists (FSCD / `Internal`)
+
+The pointwise route is not hypothetical. TypeTopology's
+`EffectfulForcing.Internal` development — by Escardó, da Rocha Paiva, Tosun, and
+Rahli, with an associated FSCD paper — carries out the effectful-forcing
+translation and its **correctness proof completely without funext**. The device
+is `Internal.ExtensionalEquality` (da Rocha Paiva & Rahli): a type-indexed
+extensional equality on System T values,
+
+```agda
+_≡_ : {A : type} → 〖 A 〗 → 〖 A 〗 → 𝓤₀ ̇
+_≡_ {ι}     n₁ n₂ = n₁ ＝ n₂
+_≡_ {σ ⇒ τ} f₁ f₂ = {x₁ x₂ : 〖 σ 〗} → x₁ ≡ x₂ → f₁ x₁ ≡ f₂ x₂
+```
+
+— `＝` at the base type, a logical relation at function types. Reasoning up to
+`_≡_` instead of `_＝_`, one never needs funext to equate functionals; the core
+modules (`Internal`, `Correctness`, `External`, `SystemT`, `Subst`,
+`ExtensionalEquality`) are `--safe` and funext-free.
+
+This is precisely the Group-3 escape route above, already realized in the
+library: `MultApplicativeT.agreeF` — the propositional equality `⟦⌜f⌝⟧ ＝ ⟦f⟧` of
+two interpretations — is the analogue of `Internal`'s correctness-up-to-`_≡_`,
+and would be funext-free if stated and proved with `_≡_`. (Groups 1 and 2 are a
+different matter: they are equalities of *ordinals / Brouwer codes*, not of System
+T functions, so they would be discharged by the `≤` / `≈`-on-codes reformulation
+rather than by `ExtensionalEquality`.)
 
 ### Constructivity: Brouwer codes vs HoTT-book ordinals
 
