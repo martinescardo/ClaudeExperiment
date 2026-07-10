@@ -19,7 +19,7 @@ Further background is that Thierry Coquand performed two interesting experiments
 
 What motivated me to do what is done here is whether AI's can actually "think" about open problems, and, at the same time, formalize them and their solutions or partial progress.
 
-The results I got in my chosen problem are mixed, with both progress and walls. You will have to judge by yourself.
+The results I got in my chosen problem are mixed, with both progress and walls. You will have to judge by yourself: see Claude's own report, [`an-ai-account.pdf`](../Claude/report/an-ai-account.pdf).
 
 
 # Full disclosure
