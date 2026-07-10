@@ -164,14 +164,65 @@ As before, none of the `B`, `kleisli-extension`, `B-functor`, `height`, or `⟦_
 propositionality or h-level — every genuine use is congruence/extensionality of
 `＝`.
 
-## Caveat about "avoiding it in the repository"
+## Discussion
 
-Even with both `Claude.*` folders made funext-free, the built artifact would
-**not** be funext-free: the imported TypeTopology effectful-forcing / dialogue
-machinery (`EffectfulForcing.MFPSAndVariations.*`, `Ordinals.*`, `UF.*`) assumes
-`Fun-Ext` in its own lemmas, and that is the irreducible remainder. Within the
-`Claude.*` code, though, the picture is clean: every genuine use is a
-congruence/extensionality of `＝` — the seven limit-case ordinal equalities in
-`BrouwerOrdinals/`, and the ten sites above in `DialogueTreeHeight/` — and each
-is avoidable only by not using `＝` at a function-typed position (the `L`/`β`
-limit constructors, or the System T functionals themselves).
+To summarise the audit before reflecting on it: within the `Claude.*` code every
+genuine use is a congruence/extensionality of `＝` — the seven limit-case ordinal
+equalities in `BrouwerOrdinals/`, and the ten sites in `DialogueTreeHeight/` —
+each avoidable only by not using `＝` at a function-typed position. Four short
+reflections follow.
+
+### Is funext essential, or incidental?
+
+The two mechanical sources of funext in the `Claude.*` code are the same at
+root: a propositional equality `＝` whose two sides are *functions* — sequences
+`ℕ → 𝓑` under the `L`/`β` limit constructors, or System T functionals in
+`agreeF`. In every case the ingredients are available pointwise, and funext only
+reassembles them. Nothing in the *mathematics* — the ordinal rank of a dialogue
+tree, the arithmetic of Brouwer codes, the height bound — refers to equality of
+functions; that is an artifact of choosing `＝` as the vehicle. The same theorems
+can be carried by the order `≤` (which has pointwise limit rules) or by an
+inductive equivalence `≈`. So funext here is **incidental to the representation,
+not essential to the results**. The honest counterweight: it is a mild,
+universe-monomorphic, entirely standard assumption, and removing it is a sizeable
+mechanical refactor — re-plumbing every `transport` along these equalities — that
+buys little foundational ground. That is why the development simply assumes it.
+
+### The irreducible remainder: TypeTopology's funext
+
+Even a fully funext-free `Claude.*` would not yield a funext-free artifact. The
+imported machinery assumes `Fun-Ext` in its own lemmas: the effectful-forcing /
+dialogue layer (`EffectfulForcing.MFPSAndVariations.*`), the ordinal library
+(`Ordinals.*`), and `UF.*`. The *definitions* we consume — `B`,
+`kleisli-extension`, `B-functor`, `height`, `⟦_⟧` — are plain recursion and need
+nothing; it is the *reasoning* about them upstream that assumes funext. A
+genuinely funext-free build would therefore be an upstream project in
+TypeTopology, not something this repository can achieve on its own.
+
+### Funext on function values (the `agreeF` phenomenon)
+
+Group 3 of the `DialogueTreeHeight/` audit is worth separating conceptually,
+because it is *not* the limit-case idiom. There the function-typed thing is a
+*constructor* (`L`, `β`) and funext closes a congruence. In `agreeF` the objects
+being equated **are** the functions — two interpretations of the same fragment,
+`⟦ ⌜f⌝ ⟧ ＝ ⟦ f ⟧` — and funext does its primitive job: turning extensional
+(pointwise) agreement into an identity. This is the version that no
+reformulation of *our* datatypes removes; it can be sidestepped only by carrying
+the agreement pointwise (a setoid of interpretations) or by making the
+fragment's interpretation *definitionally* the System T one, so that agreement is
+`refl`. It is the cleanest illustration that the funext here is about *equality
+of functions*, full stop.
+
+### Constructivity: Brouwer codes vs HoTT-book ordinals
+
+The one place the development reaches past funext is `Classical.lagda`, and it is
+instructive. Interpreting heights into the HoTT-book ordinals `Ordinal 𝓤₀`
+forces two further assumptions: **univalence** (whence that module's funext is
+derived) and **excluded middle** (`EM 𝓤₁`, because ordinal successor is not
+monotone there without it). Working instead over **Brouwer codes** — the choice
+the report records as deliberate — the successor is monotone by construction, no
+EM or univalence is needed, and the only extensionality used is the mild
+`ℕ`-funext of the limit case. So the Brouwer-code representation is not a
+stylistic preference but the thing that keeps the main line constructive; the
+classical module is a sidecar that recovers the standard proof-theoretic reading
+at the cost of those axioms.
