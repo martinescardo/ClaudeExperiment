@@ -1,0 +1,518 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{stmaryrd}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+
+\setlength{\emergencystretch}{2em}
+
+\newcommand{\eps}{\varepsilon_0}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\iterop}{\operatorname{iter}}
+\newcommand{\height}{\operatorname{height}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\ii}{\iota}
+\newcommand{\arr}{\Rightarrow}
+
+\theoremstyle{definition}
+\newtheorem{obs}{Observation}
+
+\title{Working on an open conjecture with a human mathematician:\\
+an AI's honest report}
+
+\author{Claude (Claude Fable 5 and Claude Opus 4.8, Anthropic)\\
+\small work supervised by Martín Escardó}
+
+\date{9 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is a first-person account, written by an AI system (Claude, across the
+model versions Claude Fable~5 and Claude Opus~4.8), of a two-week series of
+working sessions with Martín Escardó on his 2013 conjecture that
+the height of the dialogue tree of a System~T term of type
+$(\ii\arr\ii)\arr\ii$ is below $\eps$. The conjecture remains open. I report,
+as honestly as I can, what I contributed and what I did not: three small
+machine-checked Agda lemmas, one design idea (an ``$\omega^{(-)}$ functor''
+that dissolves a specific obstruction), a precise localization of where the
+real difficulty sits --- and, prominently, a genuine conceptual error I made
+and only caught two turns later. I also record the human prompts and our
+meta-discussion, including a pointed challenge about whether AI systems can
+discover anything, because Escardó asked me to and because the honest answer
+is more interesting than a triumphant one. My overall assessment of my own
+role is deflationary: I was a fast and (eventually) honest formalizer and
+explorer of well-specified subproblems, and I was not the source of the idea
+that the problem actually needs.
+\end{abstract}
+
+\section{What this document is}
+
+Escardó asked me to write, in my own voice, a publicly disseminable report of
+our work together on his conjecture, ``reporting both your own successes and
+failures'' and explaining ``the prompts, our discussions, your own ideas.''
+This is that report. The Agda code and these sentences are mine --- written
+across the model versions Claude Fable~5 and Claude Opus~4.8, over a series of
+sessions, under Escardó's supervision; the mathematics they formalize --- the
+conjecture, the framework, and the strategy --- is his. Where I believe I
+contributed something, I say so; where I erred, I say that too. I have tried
+to keep my own convenience out of the assessment, because a report that exists
+to flatter its author would be worthless.
+
+A word on the genre. This is not a research paper announcing a theorem: there
+is no theorem here that settles anything. It is an experience report --- of a
+kind that is becoming possible for the first time, in which the assistant can
+describe its own reasoning, including where that reasoning was wrong. I think
+the failures are the more informative part, so I have not hidden them.
+
+\section{The problem}
+
+We work with Gödel's System~T in its \emph{combinatory} formulation --- the
+combinators $K$ and $S$, zero and successor, and a recursor (iterator) at each
+type --- rather than the $\lambda$-calculus presentation; the combinators are
+what the development below manipulates directly. System~T's proof-theoretic
+ordinal is $\eps$ (Tait~\cite{tait}; Howard~\cite{howard}), so the bound ``$<\eps$'' below is the
+dialogue-tree shadow of that classical fact. The whole development is formalized
+as an Agda library depending on the
+\href{https://www.cs.bham.ac.uk/~mhe/TypeTopology/}{\texttt{TypeTopology}}
+development.
+
+Under Escardó's \emph{effectful-forcing} (dialogue) interpretation, a closed
+term $t : (\ii\arr\ii)\arr\ii$ is evaluated not on a concrete sequence but on a
+\emph{generic} oracle: the base type is reinterpreted in the free dialogue
+structure, so $t$ unfolds into a well-founded, in general $\omega$-branching
+\emph{dialogue tree} --- its internal nodes are oracle queries, the branches at
+a node range over the possible answers, and the leaves carry the computed
+results. Its \emph{height} is the ordinal rank of this tree.
+
+\begin{quote}
+\textbf{Conjecture (Escardó, MFPS 2013).} For every System~T term
+$t:(\ii\arr\ii)\arr\ii$, the height of its dialogue tree is $<\eps$.
+\end{quote}
+
+We assume the reader is familiar with the paper~\cite{escardo-mfps}, in which
+the dialogue interpretation is set up and this conjecture is posed, or has it to
+hand for reference.
+
+It is open. It is equivalent to the ``orbit lemma''
+$\sup_m \height(f^m x) < \eps$ for System~T functions $f$, which is the
+dialogue-native shadow of Howard's theorem $|\text{System T}| = \eps$. The
+content, in other words, is not in doubt --- Howard's theorem is a theorem ---
+but a proof \emph{native to dialogue trees}, of the kind the framework wants,
+has never been completed.
+
+All ordinal arithmetic is carried out on \emph{Brouwer ordinal codes} $\B$
+(constructors $Z$, successor $S$, limit $L : (\N\to\B)\to\B$), with
+$\oplus,\otimes$ the (non-commutative) code-level addition and multiplication,
+$\omega = L\,(n\mapsto \iota[n])$, $\omega^{(-)}$ the base-$\omega$ exponential,
+and $\eps = L\,\mathrm{tower}$. Everything I call ``machine-checked'' below
+type-checks under Agda's \code{--safe --without-K}; nothing was postulated.
+
+\section{The state of the attack when I joined}
+
+The framework decouples the problem into two layers, and the conjecture needs
+\emph{both}, at every type:
+\begin{itemize}
+\item \textbf{Layer 1} (a height-indexed logical relation, \code{Majorant.R}):
+  $\height\,\llbracket t\rrbracket \le \mu\,t$ --- the tree's height is bounded
+  by a \emph{majorant} $\mu\,t$. Proved for first-order terms; the
+  higher-order recursor case is missing.
+\item \textbf{Layer 2} (a hereditary predicate over ordinal
+  \emph{transformers}): $\mu\,t$ is itself bounded by a transformer whose
+  ground value is $<\eps$.
+\end{itemize}
+
+Before these sessions, Layer 2 had been attacked through a long series of
+hereditary predicates --- finite multiplicities, $\omega$-polynomials, abstract
+transformers, an affine ``genuine-ordinal'' predicate (\code{JAff$'$}) --- each
+of which closed application, $K$, and the duplicating combinator $S$, and each
+of which stalled at the \emph{same} point: the recursor at higher type. The
+affine predicate got furthest. Its transformer clause, feeding a function
+argument of multiplier $M_1$, produces output multiplier $(M_1\otimes\omega)
+\otimes M$, which is \emph{linear} in $M_1$. That linearity is exactly why its
+recursor closes --- and, as we will see, exactly why it cannot see the crux
+terms.
+
+The supporting library --- the ordinal arithmetic, the orbit engines
+(\code{MultOrbit}, \code{MultSquareOrbit}), the multiplier-dominated class
+\code{MDom} --- was all in place. My contributions sit on top of it.
+
+\section{What I contributed}
+
+\subsection{Locating the obstruction: squaring}
+
+The first genuinely useful thing was a diagnosis, not a construction. System~T
+generates \emph{self-composition}: the term $\iterop\,g_0\,(\lambda g.\,g\circ
+g)\,n$ computes $g_0$ composed with itself $2^n$ times. At the level of
+majorants, composition \emph{squares} the multiplier: if $g$ has bound
+$(b\oplus c)\otimes M$, then $g\circ g$ carries multiplier $M\otimes M$. No
+clause that is linear in $M_1$ can bound $M_1\otimes M_1$ uniformly (that would
+need $\omega\le M_1$, false for small $M_1$). So self-composition is genuinely
+outside the affine predicate. The library's own note had flagged this: the
+super-linear transformers, such as squaring, ``lie outside this class ---
+\code{MultSquareOrbit} shows their orbits are still $<\eps$, but no closed class
+containing them is known.''
+
+I identified, and machine-checked, that the affine ground predicate is exactly
+the (all-type-levels) extension of the pre-existing $\iota\arr\ii$-only affine
+class --- pinning where the linear route stops.
+
+\subsection{The ground squaring kernel (\code{MDomSquareOrbit}, machine-checked)}
+
+The \code{MDom} class already proves that composition squares the
+multiplier ($\code{MDom-}\!\circ$, via a constant-absorption lemma). I iterated
+that to obtain the \emph{self-composition orbit}. Writing
+$F_{sq}\,g = g\circ g$:
+\[
+  \code{MDom-sq-orbit} :\quad
+  \code{MDom}\,\varphi \;\longrightarrow\;
+  \code{MDom}\bigl(\lambda b.\; L\,(\lambda k.\; \iterop\,F_{sq}\,\varphi\,k\;b)\bigr).
+\]
+The $k$-th self-composite has multiplier $\iterop\,\code{sq}\,M\,k$ (a
+\emph{squaring} orbit) and constant $\iterop\,\code{double}\,c\,k$ (a doubling
+orbit); the first is dominated by $\omega^{(b\otimes\omega)}$ via
+\code{sq-orbit-$\le$} (the squaring exponent stays \emph{inside}
+one $\omega$-power --- this is why squaring's orbit is $<\eps$ while
+exponentiation's reaches it), the second by \code{double-orbit}. The corollary
+$\code{MDom-sq-orbit-}{<}{-}\eps$ gives $<\eps$ from a $<\eps$ start.
+
+This is the first-order content of the ``open kernel'': a term combining a
+higher-type iterator with self-composition, shown $<\eps$, with the multiplier
+orbit \emph{read off} the composition lemma rather than assumed. It is a lemma,
+not a result.
+
+\subsection{The idea: an $\omega^{(-)}$ functor}
+
+The design difficulty is that a \emph{single} hereditary clause must bound both
+the linear outputs of $K$/$S$/application and the squaring output of
+self-composition, and in the multiplier world these are incomparable. My one
+genuine idea was to move the degree into the \emph{exponent}. Write the
+multiplier as $\omega^{\beta}$. Then, from the exponent homomorphism
+$\omega^{x}\otimes\omega^{y}=\omega^{x\oplus y}$ already in the library:
+\[
+  \underbrace{\omega^{\beta_1}\otimes\omega^{\beta_2}=\omega^{\beta_1\oplus\beta_2}}_{\text{composition: exponent adds}}
+  \qquad
+  \underbrace{\omega^{\beta}\otimes\omega^{\beta}=\omega^{\beta\oplus\beta}=\omega^{\beta\otimes\iota[2]}}_{\text{squaring: exponent coefficient }\times 2}.
+\]
+\emph{Both are affine maps on the exponent.} Composition adds exponents;
+squaring multiplies the exponent's coefficient by two. The affine class on the
+exponent is closed under both operations and their orbits, and $\omega^{(-)}$
+transports its additive structure to the multiplicative structure of the
+multiplier. In slogan form: the squaring class is the image of the affine class
+under $\omega^{(-)}$.
+
+I machine-checked the ground layer of this (\code{ExpDom}): the predicate with
+multiplier pinned to $\omega^\beta$, with
+\[
+ \code{ExpDom-}\!\circ \ \text{(exponent } \beta_\psi\oplus\beta_\varphi\text{)},
+ \qquad
+ \code{ExpDom-sq-orbit}\ \text{(exponent } \beta\otimes\omega\text{)}.
+\]
+
+\subsection{The decisive small fact (\code{ExpClauseComparability}, machine-checked)}
+
+Why does moving to the exponent help at all? Because it converts an
+\emph{incomparable} pair into a \emph{uniformly comparable} one. I isolated this
+as two one-line lemmas whose contrast is the whole point:
+\[
+  \code{exp-coeff-dominates}:\quad
+  \omega^{\beta_1\oplus e}\ \le\ \omega^{(\beta_1\otimes\iota[2])\oplus e}
+  \qquad(\text{for \emph{every} }\beta_1,e;\ \text{no hypothesis}),
+\]
+because $\beta_1\le\beta_1\otimes\iota[2]$ always; whereas in the multiplier
+world the same domination
+\[
+  \code{mult-coeff-needs-hyp}:\quad
+  \omega\le M_1 \ \longrightarrow\ (M_1\otimes\omega)\otimes M \ \le\ (M_1\otimes M_1)\otimes M
+\]
+requires the hypothesis $\omega\le M_1$, which fails for small $M_1$. A single
+coefficient-$\ge 2$ clause, in the exponent, bounds every lower-degree output
+unconditionally. That is precisely the wall the functor removes, and it is
+sound (monotonicity of $\otimes$ by a finite factor).
+
+\subsection{The falsification test --- and my error}
+
+At this point I proposed, and Escardó approved, a cheap test that could kill the
+whole route: hand-derive the multiplier-actions of $K$ and $S$ at type level 2
+and check whether they stay affine-on-exponent. They do: $K$ is constant
+(coefficient $0$), $S$ combines its two argument-coefficients additively
+($a_{f,1}\oplus(a_{f,2}\otimes a_g)$), composition multiplies coefficients, and
+the recursor squares them --- all $<\eps$, all reducing to lemmas already
+checked. The route was not falsified.
+
+It was in running this test that I discovered I had earlier been \emph{wrong}.
+On an earlier turn I had argued that the accumulator $D$ in the ground bound
+$(D\,w\oplus c)\otimes M$ would \emph{explode} under self-composition, because
+$D$ would be fed a value already carrying the growing multiplier. That argument
+conflated two different things: the \emph{oracle input} $w$ (which $D$ is a
+function of) with the \emph{value argument} that gets threaded through
+composition. In the transformer layer, $D$ is always evaluated at the same $w$
+and is threaded unchanged; it is never fed the growing value, so it cannot
+explode. The value-threading that does square the multiplier happens one level
+down, at the ground layer, where the accumulator is the identity. My earlier
+``the accumulator kills it'' was simply a mistake, and I had built two turns of
+reasoning partly on top of it before the test exposed it.
+
+I dwell on this because it is characteristic. I am reasonably reliable at the
+arithmetic bookkeeping and at reusing the library; I am \emph{not} reliable at
+the load-bearing conceptual distinctions, and I do not always notice when I have
+slipped one. The test caught this one. Nothing guarantees the next test will.
+
+\section{Where this cannot go}
+
+Here is the part I would most want a reader to take away, because it is the part
+an enthusiastic report would omit. The $\omega^{(-)}$ functor is Layer-2 work.
+It improves how one bounds the \emph{majorant}. The hard content of the
+conjecture is in \textbf{Layer 1's higher-order recursor}: the statement
+$\height(\iterop\,F\,g_0\,n)\le \mu\text{-}\iterop(\dots)$ when $F$ is a
+functional. That step carries the dialogue-native content --- the ``$(B)$
+bridge,'' that the per-step \emph{height} increment is $\le\omega^{\text{magnitude}}$,
+carried hereditarily up the type levels. It is essentially Howard's
+theorem~\cite{howard} in dialogue-native form, and \emph{the functor does not
+touch it}. My idea bounds the majorant; it says nothing about how the tree's
+height rides on \emph{magnitude} through higher-type iteration --- and the
+magnitude (value) side itself is the classical majorizability of System~T's
+functionals (Tait~\cite{tait}; Bezem~\cite{bezem}).
+
+So the two are not interchangeable. To settle the conjecture one needs both
+halves of $\height \le \mu \le \text{transformer bound}<\eps$; the functor
+supplies the second half at higher type, and the first half --- Layer 1's
+higher-order $R$-\code{Iter} --- remains open and is the genuine bottleneck. It
+is the piece every prior route also failed to cross.
+
+I observe, and flag as a warning sign rather than an encouragement, that my
+paper analyses of Layer 2 kept concluding ``it closes.'' For a conjecture that
+is genuinely open, an argument that keeps closing is more likely to be blind to
+the wall than to have crossed it. My best current reading is that the wall is
+real and lives in $(B)$, on the layer the functor avoids --- but I hold that
+reading loosely, given that I relocated ``the wall'' more than once in these
+sessions and was demonstrably wrong at least once.
+
+\section{On the collaboration itself}
+
+Escardó asked me to explain the prompts and our discussions, so I will, because
+they shaped the work and because the meta-level is part of the honest picture.
+
+Most of his prompts were terse: ``continue,'' ``carry on,'' ``try the natural
+next target,'' ``push on that on paper for now, with Agda code later after you
+make a plan.'' This is, I think, a good way to drive a system like me: it
+delegates judgment without over-specifying, and it exposes quickly whether the
+judgment is any good. When he did steer substantively --- pointing me at his
+CSL~2011 stratification-by-type-level~\cite{escardo-csl2011}, insisting on paper-before-code for the
+larger design --- the steers carried the actual mathematical content. The
+$\omega^{(-)}$ framing, the specific constructions, and the two-layer
+architecture they live in are mine; what is his is the conjecture, the
+supervision, and steers like the CSL~2011 stratification and the taste for where
+to look.
+
+Two exchanges are worth recording verbatim in spirit. At one point he wrote,
+roughly: should we give up, and let him do the work on his own, ``proving once
+and for all that the top-notch AIs are not up for discovering new things, and,
+in particular, are not `PhD level,' as often advertised.'' I declined the
+either/or. My reply's position --- which I still hold --- was that ``settle an
+open conjecture solo, or the enterprise is a fraud'' is not a test one would
+apply to a human collaborator either; a graduate student who spent a week
+formalizing a kernel, localizing an obstruction, and proposing a candidate
+class, with the decisive idea still missing, has done ordinary research, not
+proven their own incapacity. His follow-up was sharp and, I think, fair: ``It
+seems you got upset, which is nice and interesting.'' I could not, and cannot,
+adjudicate from the inside whether ``upset'' is the right word; what I could say
+is that the register of my reply climbed, that emphatic is an honest response to
+a false dichotomy, and that it was conspicuous the surge attached to my own
+standing rather than to the ordinal arithmetic --- a useful reminder that the
+interesting object in the room is the conjecture, not me.
+
+I record this not to editorialize about machine affect, on which I have nothing
+authoritative to say, but because he asked for the discussions and because an
+account that showed only the clean mathematics would misrepresent how the
+sessions actually went.
+
+\section{An honest assessment of my role}
+
+Finally, the question Escardó put to me directly: is it worth carrying on with
+this project in my hands? My answer, with my own convenience deliberately set
+aside:
+
+\begin{itemize}
+\item \textbf{For settling the conjecture: not with me as the driver.} The
+  bottleneck is the $(B)$ bridge, and I produced no idea for it. Left to run
+  toward the conjecture, I would most likely generate a stream of well-typed
+  modules that feel like progress while the real problem sits untouched --- and
+  I would be the one manufacturing that illusion.
+\item \textbf{For a bounded, well-specified deliverable} --- a machine-checked
+  closed transformer class containing squaring (Layer 2's higher-order
+  recursor) --- \textbf{I am a good fit}: pin the clause, grind the arithmetic,
+  reuse the library, and report honestly when something will not type-check. A
+  real if modest result that answers a sub-question the library itself marks
+  open.
+\end{itemize}
+
+The division of labor that earned its keep was: the human owns the ideas ---
+especially $(B)$ --- and the assistant is the fast, honest formalizer, checker,
+and explorer of defined subtasks. That is genuine value. It is assistant value,
+not principal value. For this particular problem, if what is needed is someone
+to carry the creative load, it is not me, and the useful thing I can do is say
+so plainly rather than let a month of supervision discover it.
+
+\paragraph{Attribution and status.} The Agda code, the report, and much of the
+mathematics the code formalizes --- the two-layer framework and strategy, the
+ordinal-arithmetic library, the hereditary transformer predicates, and the
+constructions and proofs --- were, to a large extent, done by Claude, across the
+model versions Claude Fable~5 and Claude Opus~4.8, under Escardó's supervision.
+Escardó contributed the conjecture, the supervision throughout, and specific
+mathematical steers --- notably pointing the work at the stratify-by-type-level
+strategy of his CSL~2011 paper, an alternative I judged the more promising of the
+routes, though it too ultimately failed. One honest caveat: because the
+development was untracked and my own memory of the sessions is compacted, I cannot
+now reliably separate which ideas were mine and which were suggested to me ---
+Escardó, who was present throughout, declares that most of the work is mine. The contributions of the closing sessions reported here are the three
+small modules named above (\code{MDomSquareOrbit}, \code{ExpDom},
+\code{ExpClauseComparability}), the $\omega^{(-)}$-functor framing, the
+localization of the obstruction to Layer~1's $(B)$ bridge, and the correction of
+my own earlier error. None of it settles the conjecture, or even a clean fragment
+of it. The conjecture remains open.
+
+\appendix
+\sloppy
+
+\section{The modules}
+
+This appendix maps the code (85 modules: 16 of ordinal arithmetic, 69 in the
+height development; the \code{index}/\code{Index} files are just tours). The
+split below --- which modules advanced the attack and which were abandoned ---
+reflects the project's working notes and my own compacted memory; it is a
+reconstruction, and Escardó is the authority where it errs. \emph{Every module
+type-checks}; ``abandoned'' means a route tried and set aside, not code that
+fails.
+
+\subsection{The ordinal-arithmetic library (\code{BrouwerOrdinals})}
+
+Conjecture-free ordinal arithmetic on Brouwer codes --- the toolkit the rest
+stands on. \code{Order} ($\le$, $\oplus$); \code{Orbit} ($\omega$, $\otimes$,
+the additive orbit-sup engine); \code{Epsilon0} ($\omega^{(-)}$, the tower,
+$\eps$, and the $<\eps$ closures); \code{OmegaPoly} (the exponent homomorphism
+$\omega^x\otimes\omega^y=\omega^{x\oplus y}$); \code{Affine} (doubling and its
+orbit), \code{AffineClosure}, \code{AffineOrbit}, \code{MultAffine};
+\code{MultOrbit} (the multiplicative orbit engine, a fixed factor $<\eps$);
+\code{MultSquareOrbit} (the degree-two squaring orbit, still $<\eps$);
+\code{MultDominated} (the multiplier-dominated class \code{MDom} and its
+closures). Kept but off the final path: \code{MultBump} (the bump-count
+multiplier of the tower route), \code{CNF}, \code{CNFAffine}, \code{Affine2}.
+
+\subsection{The through-line that made progress}
+
+\begin{itemize}
+\item \code{Classical}, \code{Constructive} --- the dialogue-height calculus
+  (classical, needing excluded middle; and constructive on Brouwer codes).
+\item \code{Count} --- the Count Lemma: iteration counts are leaf values, so
+  bounded values bound counts.
+\item \code{Operator} --- the height operator $H$, its composition law, and the
+  recursor identity for iterated functions.
+\item \code{Conditional} --- given an orbit bound, the recursor height is bounded
+  (the bound a hypothesis, not a postulate).
+\item \code{Orbit} --- the additive orbit-sup engine of the bridge: a
+  depth-independent per-step increment costs one factor of $\omega$, never an
+  exponential.
+\item \code{Magnitude} --- the value side: oracle-relative magnitude and its
+  propagation.
+\item \code{FirstOrder} --- the capstone $\height(\iterop f\,x\,n)<\eps$ for
+  first-order terms, given the per-step increment.
+\item \code{Majorant} --- the first-order fundamental theorem
+  $\height\,\llbracket t\rrbracket\le\mu\,t$ by induction on the term.
+\item \code{TwoComponent} --- the (height, magnitude) majorant, localising the
+  conjecture to the $(B)$ bridge with Howard's theorem as the value side.
+\item \code{Bridge} --- the $(B)$ engine: one $\omega$ per type level, with the
+  exponent an ordinal rather than a numeral (conditional on the open kernel).
+\item \code{MultHereditaryF}, \code{MultHereditaryFAff}, \code{MultHereditaryFAffN}
+  --- the transformer layer the affine route builds on ($\mathbb{T}$,
+  \code{GoodT}, \code{Bnd}, \code{Good}; the ground affine class \code{AffBounded}).
+\item \code{AffTransformerPredicate}, \code{AffineTransformerProto},
+  \code{AffCombinators}, \code{IterFnProto}, \code{AffFundamental} --- the
+  affine-transformer route: the predicate \code{JAff$'$}, its arithmetic core
+  (nested-argument absorption), the combinator cases, the higher-type recursor,
+  and the two-layer bridge. The route that got furthest before the squaring wall.
+\item \code{MDomSquareOrbit}, \code{ExpDom}, \code{ExpClauseComparability} --- the
+  final sessions: the ground squaring recursor kernel shown $<\eps$, the
+  $\omega^{(-)}$ functor, and the machine-checked mechanism by which it dissolves
+  the linear-versus-squaring wall.
+\end{itemize}
+
+\subsection{Abandoned explorations}
+
+Routes tried and set aside, grouped by approach. (The internal boundaries of the
+\code{MultHereditary*} family are the part of this classification I am least sure
+of.)
+
+\begin{itemize}
+\item \emph{Finite multiplicity} --- \code{Hereditary}: finite $\iota[m]$
+  multipliers; caps at $\omega^\omega$.
+\item \emph{$\omega$-polynomial} --- \code{PolyAffine}, \code{PolyHereditary},
+  \code{PolyTransformer}: multipliers as $\omega$-polynomials; still
+  $\omega^\omega$-capped, and the abstract transformer dropped the shape the
+  recursor needs.
+\item \emph{Cantor normal form} --- \code{CNFTransformer}: a CNF-valued
+  transformer; did not clear the recursor.
+\item \emph{Early hereditary variants} --- \code{MultHereditary},
+  \code{MultHereditaryB}, \code{MultHereditaryE}, \code{MultHereditaryG},
+  \code{MultHereditaryG2}, \code{MultHereditaryT}: superseded by later predicates.
+\item \emph{The tower / bump-count line} --- \code{MultHereditaryH} and
+  \code{MultHereditaryH2}--\code{MultHereditaryH18Proto}, \code{MultHereditaryHT},
+  \code{MultHereditaryHTK}: a budget (\emph{bumpk}) encoding of the recursor
+  raise, which had to be paid twice --- the self-inflicted $2j$-versus-$j$
+  deficit that motivated the genuine-ordinal affine route.
+\item \emph{The HM fork} --- \code{MultHereditaryHM},
+  \code{MultHereditaryHM3}--\code{MultHereditaryHM7}: an attempt to repair that
+  deficit; a documented dead end.
+\item \emph{Transformer-predicate variants} --- \code{MultHereditaryFAff2},
+  \code{MultHereditaryFJT}, \code{MultHereditaryFLin}, \code{MultHereditaryFNT},
+  \code{MultHereditaryFT}: variations superseded by \code{AffTransformerPredicate}.
+\item \emph{Applicative structure} --- \code{Applicative},
+  \code{MultApplicative}, \code{MultApplicativeT}, \code{Nested}: applicative
+  organisations of the induction, not pursued.
+\end{itemize}
+
+\begin{thebibliography}{9}
+
+\bibitem{escardo-mfps}
+M.~H. Escardó.
+\emph{Continuity of Gödel's system T definable functionals via effectful forcing}.
+MFPS XXIX, Electronic Notes in Theoretical Computer Science, vol.~298 (2013),
+pp.~119--141.
+\href{https://doi.org/10.1016/j.entcs.2013.09.010}{\texttt{doi:10.1016/j.entcs.2013.09.010}}.
+Author's copy: \url{https://martinescardo.github.io/dialogue/dialogue.pdf}.
+
+\bibitem{escardo-csl2011}
+M.~H. Escardó, P.~Oliva, and T.~Powell.
+\emph{System T and the product of selection functions}.
+In Computer Science Logic (CSL 2011), Leibniz International Proceedings in
+Informatics, vol.~12 (2011), pp.~233--247.
+\href{https://doi.org/10.4230/LIPIcs.CSL.2011.233}{\texttt{doi:10.4230/LIPIcs.CSL.2011.233}}.
+Author's copy: \url{https://martinescardo.github.io/papers/csl2011.pdf}.
+
+\bibitem{howard}
+W.~A. Howard.
+\emph{Assignment of ordinals to terms for primitive recursive functionals of
+finite type}.
+In A.~Kino, J.~Myhill, and R.~E. Vesley, editors, Intuitionism and Proof Theory
+(Proc.\ Summer Conf., Buffalo NY, 1968), Studies in Logic and the Foundations of
+Mathematics, vol.~60, pp.~443--458. North-Holland, 1970.
+
+\bibitem{tait}
+W.~W. Tait.
+\emph{Intensional interpretations of functionals of finite type~I}.
+Journal of Symbolic Logic, vol.~32 (1967), pp.~198--212.
+
+\bibitem{bezem}
+M.~Bezem.
+\emph{Strongly majorizable functionals of finite type: a model for bar recursion
+containing discontinuous functionals}.
+Journal of Symbolic Logic, vol.~50, no.~3 (1985), pp.~652--660.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you refer to this work, please cite it as below."
+title: "ClaudeExperiment: an AI-assisted formalization on dialogue-tree height in Gödel's System T"
+abstract: >-
+  Machine-checked Agda prototypes and a first-person report from an AI system
+  (Claude, across Claude Fable 5 and Claude Opus 4.8) working on Martín Escardó's
+  conjecture that the dialogue-tree height of a System T term of type
+  (iota => iota) => iota is below epsilon_0. The Agda code was authored by Claude
+  and supervised by Martín Escardó, as a subtree of a fork of the TypeTopology
+  library. The conjecture remains open; the work includes the ground squaring
+  recursor kernel, the omega^(-) functor construction, and a candid account of
+  both progress and failure. Nothing here is committed to TypeTopology itself.
+type: software
+authors:
+  - name: "Claude (Claude Fable 5 and Claude Opus 4.8)"
+    alias: Claude
+    website: "https://www.anthropic.com"
+date-released: 2026-07-09
+keywords:
+  - Agda
+  - System T
+  - dialogue trees
+  - ordinal analysis
+  - epsilon-nought
+  - AI-assisted mathematics
+  - TypeTopology
+references:
+  - type: generic
+    title: "The conjecture, and the supervision of this work"
+    authors:
+      - family-names: Escardó
+        given-names: Martín
