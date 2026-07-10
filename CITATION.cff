@@ -9,7 +9,8 @@ abstract: >-
   authored by Claude and supervised by Martín Escardó. The experiment lives in
   source/Claude/ and is an Agda library depending on TypeTopology (which supplies
   the imported modules; checked against commit bae60c78). The conjecture remains
-  open. Nothing here is committed to TypeTopology itself.
+  open. Nothing here is committed to TypeTopology itself, and there is no
+  intention to do so.
 type: software
 license: MIT
 authors:

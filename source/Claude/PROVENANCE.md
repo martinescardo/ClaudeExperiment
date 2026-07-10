@@ -6,7 +6,7 @@ experiment that **depends on** the
 none of it: the modules here import TypeTopology (`MLTT`, `UF`, `Ordinals`,
 `EffectfulForcing.MFPSAndVariations`, …) via `depend: TypeTopology`, checked against
 TypeTopology commit `bae60c78`. **Nothing here is, or ever was, committed to
-TypeTopology itself.**
+TypeTopology itself, and there is no intention to do so.**
 
 ## Who did what
 

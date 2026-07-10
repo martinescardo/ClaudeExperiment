@@ -16,7 +16,7 @@ account by the AI of what was achieved, what was not, and one real error made an
 later caught.
 
 For who-did-what, see [`PROVENANCE.md`](PROVENANCE.md). Nothing here is
-committed to TypeTopology itself.
+committed to TypeTopology itself and there is no intention to do so.
 
 ## Layout
 
